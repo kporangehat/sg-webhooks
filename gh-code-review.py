@@ -17,7 +17,7 @@ app.config.from_envvar("GH_CODE_REVIEW_SETTINGS", silent=True)
 @app.route("/", methods=["POST"])
 def handle_request():
     return render_template("code_review.html", data=request.form)
-    
+
     # Check which action was performed on the pull request.
     action = request.form.get("action")
     # If we don"t care about this action then we"re done.
