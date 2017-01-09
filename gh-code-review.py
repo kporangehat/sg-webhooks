@@ -20,13 +20,13 @@ def handle_request():
     action = request.form.get("action")
     # If we don"t care about this action then we"re done.
     if action not in app.config["VALID_ACTIONS"]:
-        return
+        pass
 
     pr = request.form.get("pull_request")
 
     ticket_num = parse_ticket_from_title(pr.get("title"))
     if not ticket_num:
-        return
+        pass
 
     data = {
         "ticket": ticket_num,
