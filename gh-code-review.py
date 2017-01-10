@@ -11,20 +11,27 @@ app.config.update(dict(
     VALID_ACTIONS=["assigned", "unassigned"],
     DEBUG=True,
 ))
-app.config.from_envvar("GH_CODE_REVIEW_SETTINGS", silent=True)
+app.config.from_envvar("SG_CODE_REVIEW_SETTINGS", silent=True)
 
 
 @app.route("/", methods=["POST"])
 def handle_request():
-    return render_template("code_review.html", data=request.form)
+    data = request.get_json()
+    app.logger.debug("Got JSON data: %s" % data)
 
     # Check which action was performed on the pull request.
-    action = request.form.get("action")
+    action = data.get("action")
+    app.logger.debug("Action: %s" % action)
+
     # If we don"t care about this action then we"re done.
     if action not in app.config["VALID_ACTIONS"]:
-        pass
+        app.logger.info("Action not valid, skipping")
+        return ('', 204)
 
-    pr = request.form.get("pull_request")
+    pr = data.get("pull_request")
+    if not pr:
+        app.logger.info("No PR data received.")
+        return ('', 204)
 
     ticket_num = parse_ticket_from_title(pr.get("title"))
     if not ticket_num:
