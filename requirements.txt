@@ -5,6 +5,6 @@ itsdangerous==0.24
 Jinja2==2.9.3
 MarkupSafe==0.23
 requests==2.12.4
-shotgun-api3==git+git://github.com/shotgunsoftware/python-api.git@v3.0.32
+git+git://github.com/shotgunsoftware/python-api.git@v3.0.32
 Werkzeug==0.11.15
 wheel==0.24.0
