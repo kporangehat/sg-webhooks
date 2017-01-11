@@ -44,7 +44,6 @@ def github_cr_assignment():
 
     :returns: Empty response context with status code 204 - No Content.
     """
-    app.logger.debug("Got data: %s" % request.get_data())
     data = request.get_json()
 
     # Check which action was performed on the pull request.

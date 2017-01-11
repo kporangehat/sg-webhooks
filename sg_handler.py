@@ -1,10 +1,10 @@
-import logging
+from flask import current_app
+
 import shotgun_api3
 from constants import APP_SETTINGS
 from constants import CR_ASSIGNED_REPLY_TEMPLATE
 from constants import CR_EDITED_REPLY_TEMPLATE
 
-logger = logging.getLogger("sg_webhooks.%s" % __name__)
 
 class ShotgunHandler(object):
     """
@@ -60,7 +60,7 @@ def assign_code_review(ticket_num, sg_user, pr_title, pr_body, pr_url):
     result = sg.update(
         "Ticket", ticket_num, payload, multi_entity_update_modes={"sg_code_review": "add"}
     )
-    logger.debug("Updated SG Ticket %d: %s" % (ticket_num, result))
+    current_app.logger.debug("Updated SG Ticket %d: %s" % (ticket_num, result))
 
     # Add comment with the PR comment
     reply_text = CR_ASSIGNED_REPLY_TEMPLATE % (sg_user["name"], pr_url, pr_title, pr_body)
@@ -81,7 +81,7 @@ def unassign_code_review(ticket_num, sg_user):
     result = sg.update(
         "Ticket", ticket_num, payload, multi_entity_update_modes={"sg_code_review": "remove"}
     )
-    logger.debug("Updated SG Ticket %d: %s" % (ticket_num, result))
+    current_app.logger.debug("Updated SG Ticket %d: %s" % (ticket_num, result))
 
 
 def notify_pull_request_updated(ticket_num, sg_user, pr_url, changed, pr_title, pr_body):
@@ -115,4 +115,4 @@ def add_ticket_reply(ticket_num, reply_content):
         "content": reply_content
     }
     result = sg.create("Reply", payload)
-    logger.debug("Added Reply to SG Ticket %d: %s" % (ticket_num, result))
+    current_app.logger.debug("Added Reply to SG Ticket %d: %s" % (ticket_num, result))

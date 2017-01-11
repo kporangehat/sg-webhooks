@@ -1,1 +1,1 @@
-from .gh-code-review import gh-code-review
+from .sg-webhooks import sg_webhooks

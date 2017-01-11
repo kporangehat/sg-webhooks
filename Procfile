@@ -1,1 +1,1 @@
-web: gunicorn gh-code-review:app
+web: gunicorn sg_webhooks:app
