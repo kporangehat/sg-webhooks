@@ -38,7 +38,6 @@ def assign_code_review(ticket_num, sg_user, pr_title, pr_body, pr_url):
     :param str pr_title: Title of the pull request.
     :param str pr_body: Body of the pull request.
     :param str pr_url: HTML url on Github for the pull request.
-    :return:
     """
     # Update the SG Ticket fields assigning the code reviewer and setting status to Pending CR
     sg = ShotgunHandler.get_conn()
@@ -59,9 +58,9 @@ def assign_code_review(ticket_num, sg_user, pr_title, pr_body, pr_url):
 def unassign_code_review(ticket_num, sg_user):
     """
     Update SG Ticket and remove code review assignment.
-    :param ticket_num:
-    :param sg_user:
-    :return:
+
+    :param int ticket_num: SG Internal Ticket number.
+    :param dict sg_user: SG HumanUser entity dictionary to unassign.
     """
     sg = ShotgunHandler.get_conn()
     payload = {
@@ -75,14 +74,14 @@ def unassign_code_review(ticket_num, sg_user):
 
 def notify_pull_request_updated(ticket_num, sg_user, pr_url, changed, pr_title, pr_body):
     """
+    Add Reply to Shotgun Ticket with the new title and description of the pull request.
 
-    :param ticket_num:
-    :param sg_user:
-    :param pr_url:
-    :param changed:
-    :param pr_title:
-    :param pr_body:
-    :return:
+    :param int ticket_num: SG Internal Ticket number.
+    :param dict sg_user: SG HumanUser entity dictionary assigned.
+    :param str pr_url: Pull request url on Github.
+    :param list changed: List of changed fields in the pull request (eg. ["title"]
+    :param str pr_title: Title of the pull request.
+    :param str pr_body: Body of the pull request.
     """
     # Add comment with the PR comment
     reply_text = CR_EDITED_REPLY_TEMPLATE % (
@@ -93,10 +92,10 @@ def notify_pull_request_updated(ticket_num, sg_user, pr_url, changed, pr_title, 
 
 def add_ticket_reply(ticket_num, reply_content):
     """
+    Add a Reply to the given Shotgun Ticket number.
 
-    :param ticket_num:
-    :param reply_content:
-    :return:
+    :param int ticket_num: SG Internal Ticket number.
+    :param str reply_content: Reply message as a str.
     """
     sg = ShotgunHandler.get_conn()
     payload = {
@@ -109,7 +108,7 @@ def add_ticket_reply(ticket_num, reply_content):
 
 def get_component(name, project):
     """
-    Find Component given a name and project
+    Find Component given a name and project.
 
     :param str name: Component name
     :param dict project: Shotgun project entity dict.
@@ -129,7 +128,7 @@ def parse_ticket_from_str(title_str):
     Get SG Internal ticket number out of the pull request title.
 
     :param str title_str: Title of the pull request
-    :return: Ticket number on SG Internal as int.
+    :returns: Ticket number on SG Internal as int.
     """
     result = re.match(".*#(\d+).*", title_str)
     if not result:
@@ -140,7 +139,7 @@ def parse_ticket_from_str(title_str):
 
 def get_project_from_repo(repo_name):
     """
-    Find Project based on repo name
+    Find Project based on repo name.
 
     :param str repo_name: Github repo name.
     :returns dict: Shotgun Project entity dict.
@@ -152,7 +151,7 @@ def get_project_from_repo(repo_name):
 
 def get_user_by_email(author):
     """
-    Find author based on email address
+    Find author based on email address.
 
     Tries to match the author account email with an Email address on Shotgun, falls
     back to searching on the Github Email field.
@@ -173,7 +172,7 @@ def get_user_from_gh_login(github_login):
     Lookup SG HumanUser entity with the specified Github login.
 
     :param str github_login: Github login to look up on Shotgun internal.
-    :return: SG HumanUser as a standard entity dictionary or None.
+    :returns: SG HumanUser as a standard entity dictionary or None.
     """
     if github_login:
         sg = ShotgunHandler.get_conn()
@@ -182,15 +181,15 @@ def get_user_from_gh_login(github_login):
 
 def create_revision(project, repo, branch, revision, url, author, message):
     """
-    Create a shotgun Revision
+    Create a Shotgun Revision
 
     :param dict project: Shotgun Project entity dict.
-    :param str repo: repo name
-    :param str branch: branch name
-    :param str revision: revision name
-    :param str url: commit url on Github
-    :param dict author: github author dict from commit dict
-    :param str message: commit message
+    :param str repo: Github repo name.
+    :param str branch: Branch name
+    :param str revision: Revision name
+    :param str url: Commit url on Github.
+    :param dict author: Github author dict from commit dict.
+    :param str message: Commit message.
     """
     sg_branch = "%s/%s" % (repo, branch)
     # Special format for Shotgun web app.

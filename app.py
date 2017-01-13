@@ -74,8 +74,8 @@ def github_cr_assignment():
 @app.route("/github_commit_hook", methods=["POST"])
 def github_commit_hook():
     """
-    Handle post-commit webhook from Github, parse information and create Revision entities in
-    Shotgun
+    Handle post-commit web hook from Github, parse information and create Revision entities in
+    Shotgun for each commit.
 
     :returns: Empty response context with status code 204 - No Content.
     """
@@ -146,10 +146,10 @@ def github_commit_hook():
 
 def github_cr_assigned(ticket_num, data):
     """
+    Find the assigned user in Shotgun and assign code review on the ticket in Shotgun.
 
-    :param ticket_num:
-    :param data:
-    :return:
+    :param int ticket_num: SG Internal ticket number.
+    :param dict data: Web hook json data from Github as dict.
     """
     pr = data["pull_request"]
     assignee_login = pr["assignee"]["login"]
@@ -163,10 +163,10 @@ def github_cr_assigned(ticket_num, data):
 
 def github_cr_unassigned(ticket_num, data):
     """
+    Find the assigned user in Shotgun and remove code review assignment from Shotgun ticket.
 
-    :param ticket_num:
-    :param data:
-    :return:
+    :param int ticket_num: SG Internal ticket number.
+    :param dict data: Web hook json data from Github as dict.
     """
     assignee_login = data["assignee"]["login"]
     sg_user = sg_handler.get_user_from_gh_login(assignee_login)
@@ -179,10 +179,10 @@ def github_cr_unassigned(ticket_num, data):
 
 def github_pr_edited(ticket_num, data):
     """
+    Add Reply to the Shotgun Ticket with the updated pull request title and description.
 
-    :param ticket_num:
-    :param data:
-    :return:
+    :param int ticket_num: SG Internal ticket number.
+    :param dict data: Web hook json data from Github as dict.
     """
     pr = data["pull_request"]
     if not pr["assignee"]:
