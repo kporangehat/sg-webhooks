@@ -1,1 +1,1 @@
-from .sg-webhooks import sg_webhooks
+from .sg-webhooks import app

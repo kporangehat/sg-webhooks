@@ -3,6 +3,9 @@ import os
 # App settings
 APP_SETTINGS = dict(
     VALID_CR_ASSIGNMENT_ACTIONS=["assigned", "unassigned", "edited"],
+    COMPONENT_ENTITY_TYPE="CustomEntity07",
+    SG_PROJECT_ENTITY = {"type": "Project", "id": 2},
+    TK_PROJECT_ENTITY = {"type": "Project", "id": 12},
     SG_INTERNAL_SCRIPT_NAME=os.environ.get("SG_INTERNAL_SCRIPT_NAME"),
     SG_INTERNAL_API_KEY=os.environ.get("SG_INTERNAL_API_KEY"),
     DEBUG=True,
