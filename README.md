@@ -28,3 +28,9 @@ When a pull request title or description is **edited**, if there is a current as
 Reply to the Shotgun ticket with the updated pull request title and description.
 
 For details about the request data sent to this endpoint see [Github PullRequestEvent](https://developer.github.com/v3/activity/events/types/#pullrequestevent)
+
+## Installation
+Start with [Getting started with Docker](https://wiki.autodesk.com/display/SHOT/Getting+started+with+Docker)
+```
+    docker-compose up
+```
